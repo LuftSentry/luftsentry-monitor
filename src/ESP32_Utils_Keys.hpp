@@ -14,7 +14,6 @@ void InitKeys(){
     Serial.println("No se pudo abrir el archivo para leerlo");
     return;
   }
-  Serial.println("Reading file 2");
   while (file2.available()) {
     Read_rootca = file2.readString();
   }
@@ -25,7 +24,6 @@ void InitKeys(){
     Serial.println("No se pudo abrir el archivo para leerlo");
     return;
   }
-  Serial.println("Reading file 4");
   while (file4.available()) {
     Read_cert = file4.readString();
   }
@@ -36,7 +34,6 @@ void InitKeys(){
     Serial.println("No se pudo abrir el archivo para leerlo");
     return;
   }
-  Serial.println("Reading file 6");
   while (file6.available()) {
     Read_privatekey = file6.readString();
   }

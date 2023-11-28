@@ -104,7 +104,6 @@ void downloadDataFiles() {
   }
 
   for (int i = 0; i < num_files; i++) {
-    Serial.println("Check file "+String(filenames[i]));
     if (SPIFFS.exists(filenames[i])) {
       continue;
     }
@@ -151,7 +150,6 @@ void checkDataFolder(){
     Serial.println("Error al montar SPIFFS");
     return;
   }
-  Serial.println(!SPIFFS.exists("/data"));
   if(!SPIFFS.exists("/data")){
     downloadDataFiles();
   } else {

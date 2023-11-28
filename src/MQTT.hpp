@@ -63,7 +63,6 @@ void OnMqttReceived(char *topic, byte *payload, unsigned int length)
 
 	if (String(topic) == DATA_TOPIC)
 	{
-		Serial.println("Data del topic");
 		deserializeJson(dataResponse, payload);
 		loadData = true;
 	}

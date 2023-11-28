@@ -14,7 +14,7 @@ void ConnectMqtt()
 		Serial.println("Starting MQTT connection...");
 		if (mqttClient.connect(MQTT_CLIENT_NAME))
 		{
-			mqttClient.subscribe(OTA_TOPIC);
+			//mqttClient.subscribe(OTA_TOPIC);
 			mqttClient.subscribe(DATA_TOPIC);
 			Serial.println("Success MQTT connection");
 		}

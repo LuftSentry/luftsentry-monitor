@@ -22,7 +22,7 @@ AsyncWebServer server(80);
 
 DynamicJsonDocument dataResponse(1024);
 
-bool loadData = false;
+bool loadData = true;
 
 #include <config.h>
 #include "ESP32_Utils_OTA.hpp"
@@ -47,13 +47,20 @@ uint8_t aqi1[] = {10, 13, 18, 21, 41, 46, 50, 51, 52, 53};
 uint8_t aqi2[] = {10, 13, 18, 21, 41, 42, 43, 44, 45, 46};
 uint8_t aqi3[] = {10, 13, 18, 21, 42, 43, 44, 45, 49, 54};
 uint8_t aqi4[] = {10, 13, 18, 21, 35, 36, 42, 45, 49, 54};
-uint8_t aqi5[] = { 9, 14, 18, 21, 35, 36, 42, 45, 49, 54};
+uint8_t aqi5[] = {9, 14, 18, 21, 35, 36, 42, 45, 49, 54};
 
 void powerOnLCD()
 {
   int aqi = dataResponse["aqi"];
-  char pmStatus[20] = "PM 2.5 = ";
-  strcat(pmStatus, dataResponse["pm25"]);
+  char pmStatus[14] = "PM 2.5 = ";
+  const char* pm25;
+  if (dataResponse.containsKey("pm25"))
+  {
+    pm25 = dataResponse["pm25"];
+  } else {
+    pm25 = "N/A";
+  }
+  strcat(pmStatus, pm25);
   lcd.backlight();
   lcd.setCursor(0, 0);
   lcd.print(pmStatus);
@@ -153,16 +160,22 @@ void setup()
   Serial.begin(115200);
   delay(100);
 
-  ConnectWiFi_STA(false);
-  InitOTA();
-  InitKeys();
-  InitMqtt();
+  StaticJsonDocument<200> defaultJson;
+  defaultJson["pm25"] = "12.5";
+  defaultJson["aqi"] = 1;
+
+  deserializeJson(dataResponse, defaultJson.as<String>());
 
   lcd.init();
   strip.begin();
   strip.setBrightness(50);
   powerOffMatrix();
   pinMode(BUTTON_PIN, INPUT_PULLUP);
+
+  ConnectWiFi_STA(false);
+  InitOTA();
+  InitKeys();
+  InitMqtt();
 }
 
 void loop()
